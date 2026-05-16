@@ -1,4 +1,35 @@
-export default function Main() {
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { loginUsuario } from '../services/authService'
+import { salvarLogin } from '../utils/authStorage'
+
+export default function Login() {
+  const [matricula, setMatricula] = useState('')
+  const [senha, setSenha] = useState('')
+  const [erro, setErro] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
+
+  async function handleLogin(event) {
+    event.preventDefault()
+
+    setErro('')
+    setLoading(true)
+
+    try {
+      const data = await loginUsuario(matricula, senha)
+
+      salvarLogin(data.token, data.usuario)
+
+      navigate('/home')
+    } catch (error) {
+      setErro(error.message || 'Não foi possível conectar ao servidor')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <main className="relative flex min-h-[calc(100vh-128px)] items-center justify-center overflow-hidden bg-blue-50">
       <div className="relative z-10 mx-auto flex w-[50%] max-w-[900px] overflow-hidden rounded-2xl bg-white shadow-[0_25px_80px_rgba(0,0,0,0.25)] ring-1 ring-blue-200/60">
@@ -13,16 +44,19 @@ export default function Main() {
             Acesso ao MOBIFOR
           </h1>
 
-          <form>
+          <form onSubmit={handleLogin}>
             <div className="mb-4">
-              <label htmlFor="email" className="mb-2 block text-lg font-bold text-black">
+              <label htmlFor="matricula" className="mb-2 block text-lg font-bold text-black">
                 Matrícula
               </label>
 
               <input
-                type="email"
-                id="email"
+                type="text"
+                id="matricula"
+                value={matricula}
+                onChange={(e) => setMatricula(e.target.value)}
                 className="h-11 w-full rounded-lg bg-gray-200 px-4 text-base outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
 
@@ -34,15 +68,25 @@ export default function Main() {
               <input
                 type="password"
                 id="password"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
                 className="h-11 w-full rounded-lg bg-gray-200 px-4 text-base outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
 
+            {erro && (
+              <p className="mb-4 text-center text-sm font-semibold text-red-600">
+                {erro}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="h-11 w-full rounded-lg bg-blue-700 text-lg font-bold text-white transition hover:bg-blue-800"
+              disabled={loading}
+              className="h-11 w-full rounded-lg bg-blue-700 text-lg font-bold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-blue-400"
             >
-              Acessar
+              {loading ? 'Entrando...' : 'Acessar'}
             </button>
           </form>
         </div>

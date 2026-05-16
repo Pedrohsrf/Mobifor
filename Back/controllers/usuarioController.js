@@ -4,16 +4,29 @@ import { gerarToken } from '../utils/jwt.js';
 import Usuario from '../models/Usuario.js';
 
 export const login = async (req, res) => {
-  const { email, senha } = req.body;
+  const { matricula, senha } = req.body;
   try {
-    const usuario = await Usuario.findOne({ email });
-    if (!usuario) return res.status(404).json({ erro: 'Usuário não encontrado' });
-
+    const usuario = await Usuario.findOne({ matricula });
+    if (!usuario) {
+      return res.status(404).json({ erro: 'Usuário não encontrado' });
+    }
     const senhaValida = await verificarSenha(senha, usuario.senha);
-    if (!senhaValida) return res.status(401).json({ erro: 'Senha incorreta' });
+    if (!senhaValida) {
+      return res.status(401).json({ erro: 'Senha incorreta' });
+    }
 
     const token = gerarToken(usuario);
-    res.json({ token, usuario: { nome: usuario.nome, email: usuario.email, tipo: usuario.tipo } });
+
+    res.json({
+      token,
+      usuario: {
+        id: usuario._id,
+        nome: usuario.nome,
+        email: usuario.email,
+        matricula: usuario.matricula,
+        tipo: usuario.tipo
+      }
+    });
   } catch (err) {
     res.status(500).json({ erro: 'Erro no login', err: JSON.stringify(err) });
   }
@@ -41,10 +54,29 @@ export const obterUsuario = async (req, res) => {
 export const criarUsuario = async (req, res) => {
   try {
     const { nome, email, matricula, senha, tipo } = req.body;
+
     const senhaHash = await hashSenha(senha);
-    const novo = new Usuario({ nome, email, matricula, senha: senhaHash, tipo });
+
+    const novo = new Usuario({
+      nome,
+      email,
+      matricula,
+      senha: senhaHash,
+      tipo
+    });
+
     await novo.save();
-    res.status(201).json(novo);
+
+    res.status(201).json({
+      mensagem: 'Usuário criado com sucesso',
+      usuario: {
+        id: novo._id,
+        nome: novo.nome,
+        email: novo.email,
+        matricula: novo.matricula,
+        tipo: novo.tipo
+      }
+    });
   } catch (err) {
     res.status(500).json({ erro: 'Erro ao criar usuário', err: JSON.stringify(err) });
   }
