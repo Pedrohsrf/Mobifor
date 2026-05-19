@@ -4,7 +4,6 @@ import Login from './pages/Login'
 import Home from './pages/Home'
 import Cadastro from './pages/Cadastro'
 import Footer from './components/layout/Footer'
-import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export default function App() {
   return (
