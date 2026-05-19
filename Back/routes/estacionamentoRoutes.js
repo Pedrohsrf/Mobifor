@@ -9,14 +9,15 @@ import {
 } from '../controllers/estacionamentoController.js';
 
 import { autenticarToken } from '../middlewares/authMiddleware.js';
+import { verificarAdmin } from '../middlewares/verificarAdmin.js';
 
 const router = express.Router();
 
 router.get('/listar', listarEstacionamentos);
 router.get('/:id', autenticarToken, obterEstacionamento);
-router.post('/criar', autenticarToken, criarEstacionamento);
-router.put('/:id', autenticarToken, atualizarEstacionamento);
-router.delete('/:id', autenticarToken, deletarEstacionamento);
+router.post('/criar', autenticarToken, verificarAdmin, criarEstacionamento);
+router.put('/:id', autenticarToken, verificarAdmin, atualizarEstacionamento);
+router.delete('/:id', autenticarToken, verificarAdmin, deletarEstacionamento);
 
 router.use((req, res) => {
   res.status(404).json({

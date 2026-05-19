@@ -9,14 +9,15 @@ import {
 } from '../controllers/rotaController.js';
 
 import { autenticarToken } from '../middlewares/authMiddleware.js';
+import { verificarAdmin } from '../middlewares/verificarAdmin.js';
 
 const router = express.Router();
 
 router.get('/listar', listarRotas);
 router.get('/:id', obterRota);
-router.post('/criar', autenticarToken, criarRota);
-router.put('/:id', autenticarToken, atualizarRota);
-router.delete('/:id', autenticarToken, deletarRota);
+router.post('/criar', autenticarToken, verificarAdmin, criarRota);
+router.put('/:id', autenticarToken, verificarAdmin, atualizarRota);
+router.delete('/:id', autenticarToken, verificarAdmin, deletarRota);
 
 router.use((req, res) => {
   res.status(404).json({

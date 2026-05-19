@@ -9,14 +9,15 @@ import {
 } from '../controllers/onibusController.js';
 
 import { autenticarToken } from '../middlewares/authMiddleware.js';
+import { verificarAdmin } from '../middlewares/verificarAdmin.js';
 
 const router = express.Router();
 
 router.get('/listar', listarOnibus);
 router.get('/:id', obterOnibus);
-router.post('/criar', autenticarToken, criarOnibus);
-router.put('/:id', autenticarToken, atualizarOnibus);
-router.delete('/:id', autenticarToken, deletarOnibus);
+router.post('/criar', autenticarToken, verificarAdmin, criarOnibus);
+router.put('/:id', autenticarToken, verificarAdmin, atualizarOnibus);
+router.delete('/:id', autenticarToken, verificarAdmin, deletarOnibus);
 
 router.use((req, res) => {
   res.status(404).json({

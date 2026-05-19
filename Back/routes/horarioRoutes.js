@@ -9,14 +9,15 @@ import {
 } from '../controllers/horarioController.js';
 
 import { autenticarToken } from '../middlewares/authMiddleware.js';
+import { verificarAdmin } from '../middlewares/verificarAdmin.js';
 
 const router = express.Router();
 
 router.get('/listar', listarHorarios);
 router.get('/:id', obterHorario);
-router.post('/criar', autenticarToken, criarHorario);
-router.put('/:id', autenticarToken, atualizarHorario);
-router.delete('/:id', autenticarToken, deletarHorario);
+router.post('/criar', autenticarToken, verificarAdmin, criarHorario);
+router.put('/:id', autenticarToken, verificarAdmin, atualizarHorario);
+router.delete('/:id', autenticarToken, verificarAdmin, deletarHorario);
 
 router.use((req, res) => {
   res.status(404).json({
