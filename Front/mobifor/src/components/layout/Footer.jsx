@@ -6,7 +6,7 @@ export default function Footer() {
   <div className="container mx-auto flex items-center justify-between px-6">
 
     <div className="flex-shrink-0 ">
-      <img src={imgfooter} alt="UNIFOR" className="h-20 w-auto " />
+      <img src="/imgfooter.png" alt="UNIFOR" className="h-20 w-auto " />
     </div>
 
     <div className="text-center">
