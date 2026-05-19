@@ -30,21 +30,25 @@ export default function Header() {
         )}
 
         {isHome && (
-          <nav className="absolute right-10 top-1/2 -translate-y-1/2 flex items-center gap-8">
+          <nav className="absolute right-10 top-1/2 -translate-y-1/2 flex items-center gap-6 mr-10">
             <button
-              onClick={() => navigate('/mobistats')}
-              className="text-blue-600 font-bold text-sm tracking-wide hover:text-blue-800 transition"
-            >
-              MOBISTATS
-            </button>
-            <button
-              onClick={() => navigate('/faq')}
-              className="text-blue-600 font-bold text-sm tracking-wide hover:text-blue-800 transition"
-            >
-              FAQ
-            </button>
-          </nav>
-        )}
+            onClick={() => {
+              document.getElementById('mobistats').scrollIntoView({ behavior: 'smooth' })
+            }}
+            className="text-blue-600 font-bold text-sm tracking-wide hover:text-blue-800 transition"
+          >
+            MOBISTATS
+          </button>
+          <button
+            onClick={() => {
+              document.getElementById('faq').scrollIntoView({ behavior: 'smooth' })
+            }}
+            className="text-blue-600 font-bold text-sm tracking-wide hover:text-blue-800 transition"
+          >
+            FAQ
+          </button>
+        </nav>
+          )}
       </div>
     </header>
   )

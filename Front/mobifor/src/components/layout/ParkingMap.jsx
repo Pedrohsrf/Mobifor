@@ -282,9 +282,36 @@ export default function ParkingMap() {
         </div>
       </div>
 
-      <p className="text-lg text-blue-500 text-right mr-60" style={{ fontWeight: 700, fontStyle: "italic" }}>
+      <div className="flex justify-between items-start mt-3 px-4 ml-67">
+  
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 bg-green-500 inline-block rounded-sm"></span>
+          <span className="text-sm font-bold">: Disponível</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 bg-red-500 inline-block rounded-sm"></span>
+          <span className="text-sm font-bold">: Ocupada</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 bg-blue-500 inline-block rounded-sm"></span>
+          <span className="text-sm font-bold">: Reservada</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <i className="bi bi-bus-front text-blue-600 text-lg"></i>
+          <span className="text-sm font-bold">: UniBus</span>
+        </div>
+      </div>
+
+      <p className="text-sm text-blue-500 font-bold italic text-right mr-67">
         Vagas dinâmicas: atualização de disponibilidade constante.
       </p>
+
     </div>
+  </div>
+
+    
+
+    
   )
 }

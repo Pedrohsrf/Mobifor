@@ -5,7 +5,7 @@ import InformationSection from "../components/layout/InformationSection"
 export default function Home() {
   return (
     <main className="min-h-[calc(100vh-128px)] bg-blue-50 p-6">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6 ml-6 py-4">
+      <h1 className="flex text-2xl font-bold text-gray-800 mb-6 ml-20 py-4 ">
         Olá, Pedro Henrique!
       </h1>
 
