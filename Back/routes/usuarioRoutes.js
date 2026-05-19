@@ -10,6 +10,7 @@ import {
 } from '../controllers/usuarioController.js';
 
 import { autenticarToken } from '../middlewares/authMiddleware.js';
+import { verificarAdmin } from '../middlewares/verificarAdmin.js';
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.get('/listar', autenticarToken, listarUsuarios);
 router.get('/:id', autenticarToken, obterUsuario);
 router.post('/criar', criarUsuario);
 router.put('/:id', autenticarToken, atualizarUsuario);
-router.delete('/:id', autenticarToken, deletarUsuario);
+router.delete('/:id', autenticarToken, verificarAdmin, deletarUsuario);
 
 router.use((req, res) => {
   res.status(404).json({
