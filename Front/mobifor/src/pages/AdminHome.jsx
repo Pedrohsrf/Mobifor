@@ -1,5 +1,7 @@
 import ParkingMap from "../components/layout/ParkingMap"
 import AdminSection from "../components/admin/AdminSection"
+import ReservaValidacaoSection from '../components/admin/ReservaValidacaoSection'
+import UniBusSection from '../components/admin/UniBusSection'
 
 export default function AdminHome() {
   return (
@@ -12,7 +14,11 @@ export default function AdminHome() {
         <ParkingMap />
       </div>
 
-      <AdminSection />
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mt-10" id="Gerenciamento">
+        <ReservaValidacaoSection />
+        <UniBusSection />
+      </div>
     </main>
   )
 }
+

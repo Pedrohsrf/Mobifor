@@ -29,7 +29,7 @@ export default function InformationSection() {
   }
 
   return (
-    <section id="faq" className="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 px-6 py-60">
+    <section id="faq" className="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 px-10 py-10">
 
       <div className="border-2 border-blue-300 rounded-2xl bg-gray-100 p-30 shadow-md max-w-5xl mx-auto">
 

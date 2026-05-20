@@ -54,6 +54,7 @@ export default function Login() {
                 type="text"
                 id="matricula"
                 value={matricula}
+                maxLength={7}
                 onChange={(e) => setMatricula(e.target.value)}
                 className="h-11 w-full rounded-lg bg-gray-200 px-4 text-base outline-none focus:ring-2 focus:ring-blue-500"
                 required

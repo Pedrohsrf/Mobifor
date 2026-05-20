@@ -1,7 +1,7 @@
-export default function ParkingStatusSection() {
+export default function MobistatsSection() {
   return (
-      <section id="mobistats" className="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 px-6 py-60" max-w-4xl>
-      <div className="border-2 border-blue-300 rounded-2xl bg-gradient-to-b from-blue-50 to-gray-100 p-8 shadow-md">
+      <section id="mobistats" className="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 px-10 py-10">
+      <div className="border-2 border-blue-300 rounded-2xl bg-gradient-to-b from-blue-50 to-gray-100 p-8 shadow-md  ">
         <h2 className="text-center text-3xl font-bold text-blue-600 mb-8 tracking-wide">
           MOBISTATS
         </h2>
