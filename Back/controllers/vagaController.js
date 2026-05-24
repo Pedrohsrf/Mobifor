@@ -45,6 +45,32 @@ export const atualizarVaga = async (req, res) => {
   }
 };
 
+export const atualizarStatusVaga = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    const statusPermitidos = ['disponivel', 'ocupada', 'reservada'];
+
+    if (!statusPermitidos.includes(status)) {
+      return res.status(400).json({ erro: 'Status inválido' });
+    }
+
+    const vaga = await Vaga.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    ).populate('estacionamento');
+
+    if (!vaga) {
+      return res.status(404).json({ erro: 'Vaga não encontrada' });
+    }
+
+    res.json(vaga);
+  } catch (err) {
+    res.status(500).json({ erro: 'Erro ao atualizar status da vaga' });
+  }
+};
+
 export const deletarVaga = async (req, res) => {
   try {
     await Vaga.findByIdAndDelete(req.params.id);

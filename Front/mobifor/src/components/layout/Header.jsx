@@ -1,40 +1,51 @@
 import { useNavigate, useLocation } from 'react-router-dom'
+import { removerLogin } from '../../utils/authStorage'
 
 export default function Header() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const isLogin = location.pathname === '/'
+  const isLogin = location.pathname === '/' || location.pathname === '/login'
   const isHome = location.pathname === '/home'
   const isAdmin = location.pathname === '/admin'
 
   const smoothScrollTo = (id) => {
-  const el = document.getElementById(id)
-  if (!el) return
+    const el = document.getElementById(id)
+    if (!el) return
 
-  const targetY = el.getBoundingClientRect().top + window.scrollY
-  const startY = window.scrollY
-  const diff = targetY - startY
-  const duration = 800
-  let startTime = null
+    const targetY = el.getBoundingClientRect().top + window.scrollY
+    const startY = window.scrollY
+    const diff = targetY - startY
+    const duration = 800
+    let startTime = null
 
-  const step = (timestamp) => {
-    if (!startTime) startTime = timestamp
-    const elapsed = timestamp - startTime
-    const progress = Math.min(elapsed / duration, 1)
-    // Easing suave (easeInOutCubic)
-    const ease = progress < 0.5
-      ? 4 * progress ** 3
-      : 1 - Math.pow(-2 * progress + 2, 3) / 2
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp
 
-    window.scrollTo(0, startY + diff * ease)
+      const elapsed = timestamp - startTime
+      const progress = Math.min(elapsed / duration, 1)
 
-    if (elapsed < duration) requestAnimationFrame(step)
+      const ease =
+        progress < 0.5
+          ? 4 * progress ** 3
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2
+
+      window.scrollTo(0, startY + diff * ease)
+
+      if (elapsed < duration) requestAnimationFrame(step)
+    }
+
+    requestAnimationFrame(step)
   }
 
-  requestAnimationFrame(step)
-}
+  const handleLogout = () => {
+    const confirmar = window.confirm('Deseja realmente sair da sua conta?')
 
+    if (!confirmar) return
+
+    removerLogin()
+    navigate('/login')
+  }
 
   return (
     <header className="relative w-full bg-gray-200 px-8 py-6 shadow-md border-b border-blue-200">
@@ -61,15 +72,23 @@ export default function Header() {
           <nav className="absolute right-10 top-1/2 -translate-y-1/2 flex items-center gap-6 mr-10">
             <button
               onClick={() => smoothScrollTo('mobistats')}
-              className="text-blue-600 font-bold text-sm tracking-wide hover:text-blue-800 transition"
+              className="text-blue-600 font-bold text-base tracking-wide hover:text-blue-800 transition"
             >
               MOBISTATS
             </button>
+
             <button
               onClick={() => smoothScrollTo('faq')}
-              className="text-blue-600 font-bold text-sm tracking-wide hover:text-blue-800 transition"
+              className="text-blue-600 font-bold text-base tracking-wide hover:text-blue-800 transition"
             >
               FAQ
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className="text-blue-600 font-bold text-base tracking-wide hover:text-blue-800 transition"
+            >
+              SAIR
             </button>
           </nav>
         )}
@@ -78,9 +97,16 @@ export default function Header() {
           <nav className="absolute right-10 top-1/2 -translate-y-1/2 flex items-center gap-6 mr-10">
             <button
               onClick={() => smoothScrollTo('Gerenciamento')}
-              className="text-blue-600 font-bold text-sm tracking-wide hover:text-blue-800 transition"
+              className="text-blue-600 font-bold text-base tracking-wide hover:text-blue-800 transition"
             >
-              Gerenciar 
+              GERENCIAR
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className="text-blue-600 font-bold text-base tracking-wide hover:text-blue-800 transition"
+            >
+              SAIR
             </button>
           </nav>
         )}

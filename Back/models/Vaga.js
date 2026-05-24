@@ -2,10 +2,46 @@
 import mongoose from 'mongoose';
 
 const vagaSchema = new mongoose.Schema({
-  codigo: { type: String, required: true, unique: true },
-  tipo: { type: String, enum: ['carro', 'carro_eletrico', 'moto', 'moto_eletrica'], required: true },
-  status: { type: String, enum: ['disponivel', 'ocupada', 'reservada'], default: 'disponivel' },
-  estacionamento: { type: mongoose.Schema.Types.ObjectId, ref: 'Estacionamento', required: true }
+  codigo: {
+    type: String,
+    required: true,
+    unique: true
+  },
+
+  tipo: {
+    type: String,
+    enum: ['carro', 'carro_eletrico', 'moto', 'moto_eletrica'],
+    required: true
+  },
+
+  status: {
+    type: String,
+    enum: ['disponivel', 'ocupada', 'reservada'],
+    default: 'disponivel'
+  },
+
+  setor: {
+    type: String,
+    required: true
+  },
+
+  x: {
+    type: Number,
+    required: true
+  },
+
+  y: {
+    type: Number,
+    required: true
+  },
+
+  estacionamento: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Estacionamento',
+    required: true
+  }
+}, {
+  timestamps: true
 });
 
 export default mongoose.model('Vaga', vagaSchema);

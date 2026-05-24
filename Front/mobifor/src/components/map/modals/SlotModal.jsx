@@ -1,5 +1,8 @@
+import { useState } from "react";
+import { solicitarReserva } from "../../../services/reservaService";
+
 const STATUS = {
-  free: {
+  disponivel: {
     label: "Disponível",
     bg: "#22c55e",
     light: "#f0fdf4",
@@ -7,7 +10,7 @@ const STATUS = {
     text: "#15803d",
     btn: "bg-green-500 hover:bg-green-600",
   },
-  occupied: {
+  ocupada: {
     label: "Ocupada",
     bg: "#ef4444",
     light: "#fef2f2",
@@ -15,7 +18,7 @@ const STATUS = {
     text: "#b91c1c",
     btn: null,
   },
-  reserved: {
+  reservada: {
     label: "Reservada",
     bg: "#3b82f6",
     light: "#eff6ff",
@@ -23,9 +26,20 @@ const STATUS = {
     text: "#1d4ed8",
     btn: null,
   },
+};
+
+function formatTipo(tipo) {
+  const tipos = {
+    carro: "Carro",
+    carro_eletrico: "Carro elétrico",
+    moto: "Moto",
+    moto_eletrica: "Moto elétrica",
+    Ônibus: "Ônibus",
+  };
+
+  return tipos[tipo] ?? tipo;
 }
 
-// Ícones inline SVG com visual mais limpo
 function IconCar({ color }) {
   return (
     <svg
@@ -45,7 +59,7 @@ function IconCar({ color }) {
       <circle cx="16.5" cy="18.5" r="1.8" />
       <path d="M7.5 10h9" />
     </svg>
-  )
+  );
 }
 
 function IconMoto({ color }) {
@@ -66,7 +80,7 @@ function IconMoto({ color }) {
       <path d="M15 11l1.5-3H19" />
       <path d="M11 17h3" />
     </svg>
-  )
+  );
 }
 
 function IconBus({ color }) {
@@ -88,18 +102,44 @@ function IconBus({ color }) {
       <circle cx="8" cy="20" r="1" fill={color} />
       <circle cx="16" cy="20" r="1" fill={color} />
     </svg>
-  )
+  );
 }
 
 export default function SlotModal({ slot, onClose }) {
-  if (!slot) return null
-  const s = STATUS[slot.status] ?? STATUS.free
+  const [loading, setLoading] = useState(false);
+  const [mensagem, setMensagem] = useState("");
+  const [erro, setErro] = useState("");
 
-  const Icon = slot.type === "Ônibus"
-    ? IconBus
-    : slot.type === "Moto"
-    ? IconMoto
-    : IconCar
+  if (!slot) return null;
+
+  const s = STATUS[slot.status] ?? STATUS.disponivel;
+
+  const Icon =
+    slot.tipo === "Ônibus" || slot.type === "Ônibus"
+      ? IconBus
+      : slot.tipo === "moto" || slot.tipo === "moto_eletrica"
+      ? IconMoto
+      : IconCar;
+
+  const codigo = slot.codigo ?? slot.id;
+  const tipo = formatTipo(slot.tipo ?? slot.type);
+  const estacionamento = slot.estacionamento?.nome ?? "Estacionamento interno";
+
+  async function handleSolicitarReserva() {
+    try {
+      setLoading(true);
+      setErro("");
+      setMensagem("");
+
+      await solicitarReserva(slot._id);
+
+      setMensagem("Solicitação enviada para aprovação do administrador.");
+    } catch (err) {
+      setErro(err.message || "Erro ao solicitar reserva.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div
@@ -123,9 +163,8 @@ export default function SlotModal({ slot, onClose }) {
           boxShadow:
             "0 32px 80px rgba(15, 23, 42, 0.30), 0 12px 32px rgba(15, 23, 42, 0.16)",
         }}
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
-        {/* Fechar */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-50 border border-gray-100 text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-all flex items-center justify-center"
@@ -141,7 +180,6 @@ export default function SlotModal({ slot, onClose }) {
           </svg>
         </button>
 
-        {/* Ícone superior centralizado */}
         <div
           className="rounded-3xl flex items-center justify-center mb-6"
           style={{
@@ -156,22 +194,18 @@ export default function SlotModal({ slot, onClose }) {
           <Icon color={s.bg} />
         </div>
 
-        {/* Header */}
         <div className="text-center mb-6">
           <p className="text-gray-400 text-xs uppercase tracking-widest mb-2 font-bold">
-            Estacionamento interno
+            {estacionamento}
           </p>
 
           <h2 className="text-gray-800 text-3xl font-bold leading-tight">
-            Vaga {slot.id}
+            Vaga {codigo}
           </h2>
 
-          <p className="text-gray-500 text-sm font-medium mt-2">
-            {slot.type}
-          </p>
+          <p className="text-gray-500 text-sm font-medium mt-2">{tipo}</p>
         </div>
 
-        {/* Status */}
         <div className="flex justify-center mb-7">
           <span
             className="text-sm font-bold px-5 py-2 rounded-full"
@@ -185,9 +219,21 @@ export default function SlotModal({ slot, onClose }) {
           </span>
         </div>
 
-        {/* Ação */}
         <div className="w-full mt-auto">
-          {slot.status === "free" && (
+          {slot.isBusStop && (
+            <div
+              className="rounded-2xl px-4 py-3.5 text-center text-sm font-bold"
+              style={{
+                background: "#eff6ff",
+                color: "#1d4ed8",
+                border: "1px solid #bfdbfe",
+              }}
+            >
+              Ponto do UniBus: {slot.label}
+            </div>
+          )}
+
+          {!slot.isBusStop && slot.status === "disponivel" && (
             <div className="space-y-3">
               <div
                 className="rounded-2xl px-4 py-3 text-center text-sm text-gray-500 font-medium"
@@ -196,18 +242,36 @@ export default function SlotModal({ slot, onClose }) {
                   border: "1px solid #e5e7eb",
                 }}
               >
-                Nenhum horário escolhido.
+                A reserva será enviada para aprovação do administrador.
               </div>
 
+              {mensagem && (
+                <div className="rounded-2xl px-4 py-3 text-center text-sm font-bold bg-green-50 text-green-600 border border-green-200">
+                  {mensagem}
+                </div>
+              )}
+
+              {erro && (
+                <div className="rounded-2xl px-4 py-3 text-center text-sm font-bold bg-red-50 text-red-500 border border-red-200">
+                  {erro}
+                </div>
+              )}
+
               <button
-                className={`w-full ${s.btn} text-white text-sm font-bold py-3.5 rounded-2xl active:scale-95 transition-all shadow-md hover:shadow-lg`}
+                onClick={handleSolicitarReserva}
+                disabled={loading || !!mensagem}
+                className={`w-full ${s.btn} text-white text-sm font-bold py-3.5 rounded-2xl active:scale-95 transition-all shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed`}
               >
-                Reservar vaga
+                {loading
+                  ? "Enviando..."
+                  : mensagem
+                  ? "Solicitação enviada"
+                  : "Solicitar reserva"}
               </button>
             </div>
           )}
 
-          {slot.status === "occupied" && (
+          {!slot.isBusStop && slot.status === "ocupada" && (
             <div
               className="rounded-2xl px-4 py-3.5 text-center text-sm font-bold"
               style={{
@@ -220,7 +284,7 @@ export default function SlotModal({ slot, onClose }) {
             </div>
           )}
 
-          {slot.status === "reserved" && (
+          {!slot.isBusStop && slot.status === "reservada" && (
             <div
               className="rounded-2xl px-4 py-3.5 text-center text-sm font-bold"
               style={{
@@ -235,5 +299,5 @@ export default function SlotModal({ slot, onClose }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

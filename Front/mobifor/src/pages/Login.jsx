@@ -1,20 +1,34 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { loginUsuario } from '../services/authService'
-import { salvarLogin } from '../utils/authStorage'
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+
+import { loginUsuario } from "../services/authService"
+import { salvarLogin, buscarToken, buscarUsuario } from "../utils/authStorage"
 
 export default function Login() {
-  const [matricula, setMatricula] = useState('')
-  const [senha, setSenha] = useState('')
-  const [erro, setErro] = useState('')
+  const [matricula, setMatricula] = useState("")
+  const [senha, setSenha] = useState("")
+  const [erro, setErro] = useState("")
   const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
 
+  useEffect(() => {
+    const token = buscarToken()
+    const usuario = buscarUsuario()
+
+    if (!token || !usuario) return
+
+    if (usuario.tipo === "admin") {
+      navigate("/admin", { replace: true })
+    } else {
+      navigate("/home", { replace: true })
+    }
+  }, [navigate])
+
   async function handleLogin(event) {
     event.preventDefault()
 
-    setErro('')
+    setErro("")
     setLoading(true)
 
     try {
@@ -22,9 +36,13 @@ export default function Login() {
 
       salvarLogin(data.token, data.usuario)
 
-      navigate('/home')
+      if (data.usuario?.tipo === "admin") {
+        navigate("/admin")
+      } else {
+        navigate("/home")
+      }
     } catch (error) {
-      setErro(error.message || 'Não foi possível conectar ao servidor')
+      setErro(error.message || "Não foi possível conectar ao servidor")
     } finally {
       setLoading(false)
     }
@@ -46,7 +64,10 @@ export default function Login() {
 
           <form onSubmit={handleLogin}>
             <div className="mb-4">
-              <label htmlFor="matricula" className="mb-2 block text-lg font-bold text-black">
+              <label
+                htmlFor="matricula"
+                className="mb-2 block text-lg font-bold text-black"
+              >
                 Matrícula
               </label>
 
@@ -62,7 +83,10 @@ export default function Login() {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="password" className="mb-2 block text-lg font-bold text-black">
+              <label
+                htmlFor="password"
+                className="mb-2 block text-lg font-bold text-black"
+              >
                 Senha
               </label>
 
@@ -87,7 +111,7 @@ export default function Login() {
               disabled={loading}
               className="h-11 w-full rounded-lg bg-blue-700 text-lg font-bold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-blue-400"
             >
-              {loading ? 'Entrando...' : 'Acessar'}
+              {loading ? "Entrando..." : "Acessar"}
             </button>
           </form>
         </div>
@@ -95,7 +119,7 @@ export default function Login() {
         <div className="w-1/2">
           <img
             src="/foto_estacionamento.png"
-            alt="Unifor Logo"
+            alt="Estacionamento"
             className="h-full w-full object-cover"
           />
         </div>

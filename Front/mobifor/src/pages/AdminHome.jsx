@@ -1,4 +1,4 @@
-import ParkingMap from "../components/layout/ParkingMap"
+import ParkingMap from "../components/map/ParkingMap"
 import AdminSection from "../components/admin/AdminSection"
 import ReservaValidacaoSection from '../components/admin/ReservaValidacaoSection'
 import UniBusSection from '../components/admin/UniBusSection'

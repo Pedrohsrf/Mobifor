@@ -5,6 +5,7 @@ import {
   obterVaga,
   criarVaga,
   atualizarVaga,
+  atualizarStatusVaga,
   deletarVaga
 } from '../controllers/vagaController.js';
 
@@ -17,6 +18,7 @@ router.get('/listar', listarVagas);
 router.get('/:id', autenticarToken, obterVaga);
 router.post('/criar', autenticarToken, verificarAdmin, criarVaga);
 router.put('/:id', autenticarToken, verificarAdmin, atualizarVaga);
+router.patch('/:id/status', autenticarToken, verificarAdmin, atualizarStatusVaga);
 router.delete('/:id', autenticarToken, verificarAdmin, deletarVaga);
 
 router.use((req, res) => {

@@ -1,10 +1,14 @@
-// Back/middlewares/verificarAdmin.js
 export const verificarAdmin = (req, res, next) => {
-  const usuario = req.user?.user;
-  
-  if (!usuario || usuario.tipo !== 'admin') {
-    return res.status(403).json({ erro: 'Acesso negado! Apenas administradores podem realizar essa ação.' });
+  const tipoUsuario =
+    req.user?.tipo ||
+    req.user?.user?.tipo ||
+    req.user?.usuario?.tipo
+
+  if (tipoUsuario !== 'admin') {
+    return res.status(403).json({
+      erro: 'Acesso negado. Apenas administradores podem realizar essa ação.'
+    })
   }
-  
-  next();
-};
+
+  next()
+}
