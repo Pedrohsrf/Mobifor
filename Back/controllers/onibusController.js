@@ -1,55 +1,73 @@
-// Back/controllers/onibusController.js
 import Onibus from '../models/Onibus.js';
 
 export const listarOnibus = async (req, res) => {
   try {
-    const onibus = await Onibus.find().populate('rota');
+    const onibus = await Onibus.find();
+
     res.json(onibus);
+
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao listar ônibus' });
+
+    res.status(500).json({
+      erro: 'Erro ao listar ônibus'
+    });
   }
 };
 
 export const obterOnibus = async (req, res) => {
   try {
-    const onibus = await Onibus.findById(req.params.id).populate('rota');
-    if (!onibus) return res.status(404).json({ erro: 'Ônibus não encontrado' });
-    res.json(onibus);
-  } catch (err) {
-    res.status(500).json({ erro: 'Erro ao obter ônibus' });
-  }
-};
 
-export const criarOnibus = async (req, res) => {
-  try {
-    const { identificador, localizacao_atual, rota } = req.body;
-    const novo = new Onibus({ identificador, localizacao_atual, rota });
-    await novo.save();
-    res.status(201).json(novo);
+    const onibus = await Onibus.findById(req.params.id);
+
+    if (!onibus) {
+      return res.status(404).json({
+        erro: 'Ônibus não encontrado'
+      });
+    }
+
+    res.json(onibus);
+
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao criar ônibus', err: JSON.stringify(err) });
+
+    res.status(500).json({
+      erro: 'Erro ao obter ônibus'
+    });
   }
 };
 
 export const atualizarOnibus = async (req, res) => {
   try {
-    const { identificador, localizacao_atual, rota } = req.body;
-    const onibus = await Onibus.findByIdAndUpdate(
-      req.params.id,
-      { identificador, localizacao_atual, rota },
-      { new: true }
-    );
-    res.json(onibus);
-  } catch (err) {
-    res.status(500).json({ erro: 'Erro ao atualizar ônibus' });
-  }
-};
 
-export const deletarOnibus = async (req, res) => {
-  try {
-    await Onibus.findByIdAndDelete(req.params.id);
-    res.status(204).end();
+    const {
+      numero,
+      pontos_passagem,
+      terminal_chegada,
+      status
+    } = req.body;
+
+    const onibus = await Onibus.findById(req.params.id);
+
+    if (!onibus) {
+      return res.status(404).json({
+        erro: 'Ônibus não encontrado'
+      });
+    }
+
+    onibus.numero = numero;
+    onibus.pontos_passagem = pontos_passagem;
+    onibus.terminal_chegada = terminal_chegada;
+    onibus.status = status;
+
+    await onibus.save();
+
+    res.json(onibus);
+
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao deletar ônibus' });
+
+    console.error(err);
+
+    res.status(500).json({
+      erro: 'Erro ao atualizar ônibus'
+    });
   }
 };

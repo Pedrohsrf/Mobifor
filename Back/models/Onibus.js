@@ -1,10 +1,30 @@
-// Back/models/Onibus.js
 import mongoose from 'mongoose';
 
 const onibusSchema = new mongoose.Schema({
-  identificador: { type: String, required: true, unique: true },
-  localizacao_atual: { type: String },
-  rota: { type: mongoose.Schema.Types.ObjectId, ref: 'Rota', required: true }
+  numero: {
+    type: String,
+    required: true
+  },
+
+  ponto_partida: {
+    type: String,
+    required: true
+  },
+
+  pontos_passagem: [{
+    type: String
+  }],
+
+  terminal_chegada: {
+    type: String,
+    required: true
+  },
+
+  status: {
+    type: String,
+    enum: ['ativo', 'inativo'],
+    default: 'ativo'
+  }
 });
 
 export default mongoose.model('Onibus', onibusSchema);

@@ -13,6 +13,7 @@ import reservaRoutes from './routes/reservaRoutes.js';
 import onibusRoutes from './routes/onibusRoutes.js';
 import rotaRoutes from './routes/rotaRoutes.js';
 import horarioRoutes from './routes/horarioRoutes.js';
+import mobistatsRoutes from './routes/mobistatsRoutes.js'
 
 dotenv.config();
 const app = express();
@@ -32,6 +33,7 @@ app.use('/api/reservas', reservaRoutes);
 app.use('/api/onibus', onibusRoutes);
 app.use('/api/rotas', rotaRoutes);
 app.use('/api/horarios', horarioRoutes);
+app.use('/api/mobistats', mobistatsRoutes)
 
 // Rota coringa: deve ser a última
 app.use((req, res) => {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 
+import UniBusModal from "./modals/UniBusModal"
 import SlotModal from "./modals/SlotModal"
 import AdminSlotModal from "./modals/AdminSlotModal"
 import MapBackground from "./background/MapBackground"
@@ -11,12 +12,14 @@ import { BUS_STOPS } from "./constants/mapConstants"
 import { useParkingMapControls } from "./hooks/useParkingMapControls"
 import { listarVagas } from "../../services/vagaService"
 import { buscarUsuario } from "../../utils/authStorage"
+import { listarOnibus } from "../../services/onibusServices"
 
 export default function ParkingMap() {
   const [selected, setSelected] = useState(null)
   const [slots, setSlots] = useState([])
   const [loading, setLoading] = useState(true)
   const [erro, setErro] = useState("")
+  const [onibus, setOnibus] = useState([])
 
   const usuario = buscarUsuario()
   const isAdmin = usuario?.tipo === "admin"
@@ -32,38 +35,44 @@ export default function ParkingMap() {
   } = useParkingMapControls()
 
   useEffect(() => {
-    async function carregarVagas() {
-      try {
-        const data = await listarVagas()
-        setSlots(data)
-      } catch (err) {
-        console.error(err)
-        setErro("Erro ao carregar vagas.")
-      } finally {
-        setLoading(false)
-      }
-    }
+  async function carregarDados() {
+    try {
+      const [vagasData, onibusData] = await Promise.all([
+        listarVagas(),
+        listarOnibus()
+      ])
 
-    carregarVagas()
-  }, [])
+      setSlots(vagasData)
+      setOnibus(onibusData)
+
+    } catch (err) {
+
+      console.error(err)
+
+      setErro("Erro ao carregar mapa.")
+    } finally {
+
+      setLoading(false)
+    }
+  }
+
+
+  carregarDados()
+}, [])
 
   const handleSlotClick = (slot, e) => {
     e.stopPropagation()
     setSelected(slot)
   }
 
-  const handleBusClick = (stop, e) => {
-    e.stopPropagation()
+  const handleBusClick = (bus, e) => {
+  e.stopPropagation()
 
-    setSelected({
-      _id: stop.id,
-      codigo: stop.id,
-      tipo: "Ônibus",
-      status: "disponivel",
-      label: stop.label,
-      isBusStop: true,
-    })
-  }
+  setSelected({
+    ...bus,
+    isBusStop: true,
+  })
+}
 
   const handleStatusUpdated = (vagaAtualizada) => {
     setSlots((prev) =>
@@ -126,12 +135,17 @@ export default function ParkingMap() {
               />
             ))}
 
-            {BUS_STOPS.map((stop) => (
+            {onibus.map((bus, index) => (
               <BusStop
-                key={stop.id}
-                stop={stop}
-                onClick={(e) => handleBusClick(stop, e)}
-              />
+              key={bus._id}
+              stop={{
+                id: bus._id,
+                x: BUS_STOPS[index]?.x ?? 100,
+                y: BUS_STOPS[index]?.y ?? 100,
+                label: `UniBus ${bus.numero}`
+              }}
+              onClick={(e) => handleBusClick(bus, e)}
+            />
             ))}
           </g>
         </svg>
@@ -152,7 +166,7 @@ export default function ParkingMap() {
           </div>
         )}
 
-        {selected && !isAdmin && (
+        {selected && !isAdmin && !selected.isBusStop && (
           <SlotModal
             slot={selected}
             onClose={() => setSelected(null)}
@@ -167,9 +181,9 @@ export default function ParkingMap() {
           />
         )}
 
-        {selected && isAdmin && selected.isBusStop && (
-          <SlotModal
-            slot={selected}
+        {selected && selected.isBusStop && (
+          <UniBusModal
+            bus={selected}
             onClose={() => setSelected(null)}
           />
         )}
