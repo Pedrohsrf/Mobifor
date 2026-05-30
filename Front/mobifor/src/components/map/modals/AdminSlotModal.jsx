@@ -80,10 +80,11 @@ export default function AdminSlotModal({ slot, onClose, onStatusUpdated }) {
       <div
         className="bg-white relative flex flex-col items-center"
         style={{
-          width: "460px",
+          width: "420px",
           maxWidth: "92%",
-          minHeight: "430px",
-          padding: "34px 38px 32px",
+          minHeight: "380px",
+          maxHeight: "430px",
+          padding: "26px 34px 26px",
           borderRadius: "30px",
           border: "1px solid rgba(226, 232, 240, 0.95)",
           boxShadow:
@@ -107,12 +108,12 @@ export default function AdminSlotModal({ slot, onClose, onStatusUpdated }) {
         </button>
 
         <div
-          className="rounded-3xl flex items-center justify-center mb-6"
+          className="rounded-3xl flex items-center justify-center mb-5"
           style={{
             background: `linear-gradient(135deg, ${statusAtual.light} 0%, #ffffff 100%)`,
             border: `1.5px solid ${statusAtual.border}`,
-            width: "122px",
-            height: "110px",
+            width: "104px",
+            height: "92px",
             boxShadow:
               "inset 0 1px 0 rgba(255,255,255,0.9), 0 14px 30px rgba(15,23,42,0.10)",
           }}
@@ -123,12 +124,12 @@ export default function AdminSlotModal({ slot, onClose, onStatusUpdated }) {
           />
         </div>
 
-        <div className="text-center mb-6">
+        <div className="text-center mb-5">
           <p className="text-gray-400 text-xs uppercase tracking-widest mb-2 font-bold">
             Painel administrativo
           </p>
 
-          <h2 className="text-gray-800 text-3xl font-bold leading-tight">
+          <h2 className="text-gray-800 text-2xl font-bold leading-tight">
             Vaga {codigo}
           </h2>
 
@@ -137,7 +138,7 @@ export default function AdminSlotModal({ slot, onClose, onStatusUpdated }) {
           </p>
         </div>
 
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-5">
           <span
             className="text-sm font-bold px-5 py-2 rounded-full"
             style={{
@@ -152,19 +153,19 @@ export default function AdminSlotModal({ slot, onClose, onStatusUpdated }) {
 
         <div className="w-full space-y-3 mt-auto">
           {slot.status === "reservada" && (
-            <div className="rounded-2xl px-4 py-3 text-center text-sm font-bold bg-blue-50 text-blue-600 border border-blue-200">
-              Esta vaga está reservada por solicitação aprovada. Para liberar, marque como disponível.
+            <div className="rounded-2xl px-4 py-2.5 text-center text-sm font-bold bg-blue-50 text-blue-600 border border-blue-200">
+              Vaga reservada por solicitação aprovada.
             </div>
           )}
 
           {mensagem && (
-            <div className="rounded-2xl px-4 py-3 text-center text-sm font-bold bg-green-50 text-green-600 border border-green-200">
+            <div className="rounded-2xl px-4 py-2.5 text-center text-sm font-bold bg-green-50 text-green-600 border border-green-200">
               {mensagem}
             </div>
           )}
 
           {erro && (
-            <div className="rounded-2xl px-4 py-3 text-center text-sm font-bold bg-red-50 text-red-500 border border-red-200">
+            <div className="rounded-2xl px-4 py-2.5 text-center text-sm font-bold bg-red-50 text-red-500 border border-red-200">
               {erro}
             </div>
           )}
@@ -172,7 +173,7 @@ export default function AdminSlotModal({ slot, onClose, onStatusUpdated }) {
           <button
             onClick={() => handleAtualizarStatus("disponivel")}
             disabled={loading || slot.status === "disponivel"}
-            className="w-full bg-green-500 hover:bg-green-600 disabled:bg-green-300 disabled:cursor-not-allowed text-white text-sm font-bold py-3.5 rounded-2xl active:scale-95 transition-all shadow-md hover:shadow-lg"
+            className="w-full bg-green-500 hover:bg-green-600 disabled:bg-green-300 disabled:cursor-not-allowed text-white text-sm font-bold py-3 rounded-2xl active:scale-95 transition-all shadow-md hover:shadow-lg"
           >
             Marcar como DISPONÍVEL
           </button>
@@ -180,7 +181,7 @@ export default function AdminSlotModal({ slot, onClose, onStatusUpdated }) {
           <button
             onClick={() => handleAtualizarStatus("ocupada")}
             disabled={loading || slot.status === "ocupada"}
-            className="w-full bg-red-500 hover:bg-red-600 disabled:bg-red-300 disabled:cursor-not-allowed text-white text-sm font-bold py-3.5 rounded-2xl active:scale-95 transition-all shadow-md hover:shadow-lg"
+            className="w-full bg-red-500 hover:bg-red-600 disabled:bg-red-300 disabled:cursor-not-allowed text-white text-sm font-bold py-3 rounded-2xl active:scale-95 transition-all shadow-md hover:shadow-lg"
           >
             Marcar como INDISPONÍVEL
           </button>

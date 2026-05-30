@@ -14,10 +14,9 @@ export default function UniBusModal({ bus, onClose }) {
       <div
         className="bg-white relative flex flex-col items-center"
         style={{
-          width: '460px',
+          width: '420px',
           maxWidth: '92%',
-          minHeight: '430px',
-          padding: '34px 38px 32px',
+          padding: '24px 34px 26px',
           borderRadius: '30px',
           border: '1px solid rgba(226, 232, 240, 0.95)',
           boxShadow:
@@ -32,21 +31,21 @@ export default function UniBusModal({ bus, onClose }) {
           ✕
         </button>
 
-        <div className="w-24 h-24 rounded-3xl bg-blue-50 border border-blue-200 flex items-center justify-center mb-6">
+        <div className="w-20 h-20 rounded-3xl bg-blue-50 border border-blue-200 flex items-center justify-center mb-4">
           <i className="bi bi-bus-front text-5xl text-blue-500"></i>
         </div>
 
-        <div className="text-center mb-6">
-          <p className="text-gray-400 text-xs uppercase tracking-widest mb-2 font-bold">
+        <div className="text-center mb-5">
+          <p className="text-gray-400 text-xs uppercase tracking-widest mb-1.5 font-bold">
             Transporte universitário
           </p>
 
-          <h2 className="text-gray-800 text-3xl font-bold">
+          <h2 className="text-gray-800 text-3xl font-bold leading-tight">
             UniBus {bus.numero}
           </h2>
         </div>
 
-        <div className="w-full space-y-3">
+        <div className="w-full space-y-2.5">
           <InfoItem
             label="Ponto de partida"
             value={bus.ponto_partida}
@@ -62,7 +61,7 @@ export default function UniBusModal({ bus, onClose }) {
             value={bus.status}
           />
 
-          <div className="rounded-2xl p-4 border border-gray-200 bg-gray-50">
+          <div className="rounded-2xl p-3.5 border border-gray-200 bg-gray-50">
             <p className="text-sm font-bold text-gray-600 mb-2">
               Pontos de passagem
             </p>
@@ -86,7 +85,7 @@ export default function UniBusModal({ bus, onClose }) {
 
 function InfoItem({ label, value }) {
   return (
-    <div className="rounded-2xl px-4 py-3 flex justify-between items-center bg-gray-50 border border-gray-200">
+    <div className="rounded-2xl px-4 py-2.5 flex justify-between items-center bg-gray-50 border border-gray-200">
       <span className="text-gray-400 text-sm font-medium">
         {label}
       </span>

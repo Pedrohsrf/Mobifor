@@ -7,6 +7,7 @@ import { salvarLogin, buscarToken, buscarUsuario } from "../utils/authStorage"
 export default function Login() {
   const [matricula, setMatricula] = useState("")
   const [senha, setSenha] = useState("")
+  const [permanecerConectado, setPermanecerConectado] = useState(false)
   const [erro, setErro] = useState("")
   const [loading, setLoading] = useState(false)
 
@@ -34,7 +35,7 @@ export default function Login() {
     try {
       const data = await loginUsuario(matricula, senha)
 
-      salvarLogin(data.token, data.usuario)
+      salvarLogin(data.token, data.usuario, permanecerConectado)
 
       if (data.usuario?.tipo === "admin") {
         navigate("/admin")
@@ -82,7 +83,7 @@ export default function Login() {
               />
             </div>
 
-            <div className="mb-4">
+            <div className="mb-1">
               <label
                 htmlFor="password"
                 className="mb-2 block text-lg font-bold text-black"
@@ -99,6 +100,17 @@ export default function Login() {
                 required
               />
             </div>
+
+            <label className="mb-4 flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <input
+                type="checkbox"
+                checked={permanecerConectado}
+                onChange={(e) => setPermanecerConectado(e.target.checked)}
+                className="h-4 w-4 cursor-pointer accent-blue-600"
+              />
+
+              Permanecer conectado
+            </label>
 
             {erro && (
               <p className="mb-4 text-center text-sm font-semibold text-red-600">

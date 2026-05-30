@@ -85,20 +85,20 @@ export default function ParkingMap() {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-5">
       <div
         ref={containerRef}
         className="relative mx-auto overflow-hidden select-none"
         style={{
-          width: "70%",
+          width: "78%",
           maxWidth: "1120px",
-          height: "560px",
-          borderRadius: "18px",
-          border: "2px solid #60a5fa",
+          height: "480px",
+          borderRadius: "24px",
+          border: "2px solid #93c5fd",
           background:
-            "linear-gradient(135deg, #eef6ff 0%, #e5edf7 45%, #f8fafc 100%)",
+            "linear-gradient(135deg, #f8fbff 0%, #eef6ff 45%, #f8fafc 100%)",
           cursor: "grab",
-          boxShadow: "0 10px 25px rgba(15, 23, 42, 0.08)",
+          boxShadow: "0 16px 35px rgba(15, 23, 42, 0.08)",
         }}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
@@ -113,7 +113,7 @@ export default function ParkingMap() {
           <g
             transform={`translate(${transform.x},${transform.y}) scale(${transform.scale})`}
           >
-            <g opacity="0.92">
+            <g opacity="0.95">
               <MapBackground />
             </g>
 
@@ -123,7 +123,7 @@ export default function ParkingMap() {
               width="3000"
               height="3000"
               fill="#eaf4ff"
-              opacity="0.22"
+              opacity="0.16"
               pointerEvents="none"
             />
 
@@ -188,17 +188,17 @@ export default function ParkingMap() {
           />
         )}
 
-        <div className="absolute bottom-4 right-4 flex flex-col gap-1 z-10">
+        <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-10">
           <button
             onClick={zoomIn}
-            className="w-8 h-8 bg-white rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 flex items-center justify-center shadow-sm text-base font-medium transition-colors"
+            className="w-9 h-9 bg-white rounded-xl border border-blue-100 text-blue-600 hover:bg-blue-50 flex items-center justify-center shadow-sm text-base font-bold transition-colors"
           >
             ＋
           </button>
 
           <button
             onClick={zoomOut}
-            className="w-8 h-8 bg-white rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 flex items-center justify-center shadow-sm text-base font-medium transition-colors"
+            className="w-9 h-9 bg-white rounded-xl border border-blue-100 text-blue-600 hover:bg-blue-50 flex items-center justify-center shadow-sm text-base font-bold transition-colors"
           >
             －
           </button>

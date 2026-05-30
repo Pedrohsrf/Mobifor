@@ -49,7 +49,7 @@ function IconCar({ color }) {
       strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-14 h-14"
+      className="w-12 h-12"
     >
       <path d="M5 13l1.5-4.5A2.2 2.2 0 0 1 8.6 7h6.8a2.2 2.2 0 0 1 2.1 1.5L19 13" />
       <path d="M4.5 13h15a1.5 1.5 0 0 1 1.5 1.5V18a1 1 0 0 1-1 1h-1.2" />
@@ -71,7 +71,7 @@ function IconMoto({ color }) {
       strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-14 h-14"
+      className="w-12 h-12"
     >
       <circle cx="6" cy="17" r="3" />
       <circle cx="18" cy="17" r="3" />
@@ -92,7 +92,7 @@ function IconBus({ color }) {
       strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-14 h-14"
+      className="w-12 h-12"
     >
       <rect x="5" y="4" width="14" height="14" rx="2.5" />
       <path d="M8 4v14" />
@@ -154,10 +154,11 @@ export default function SlotModal({ slot, onClose }) {
       <div
         className="bg-white relative flex flex-col items-center"
         style={{
-          width: "460px",
+          width: "420px",
           maxWidth: "92%",
-          minHeight: "430px",
-          padding: "34px 38px 32px",
+          minHeight: "380px",
+          maxHeight: "430px",
+          padding: "26px 34px 26px",
           borderRadius: "30px",
           border: "1px solid rgba(226, 232, 240, 0.95)",
           boxShadow:
@@ -181,12 +182,12 @@ export default function SlotModal({ slot, onClose }) {
         </button>
 
         <div
-          className="rounded-3xl flex items-center justify-center mb-6"
+          className="rounded-3xl flex items-center justify-center mb-5"
           style={{
             background: `linear-gradient(135deg, ${s.light} 0%, #ffffff 100%)`,
             border: `1.5px solid ${s.border}`,
-            width: "122px",
-            height: "110px",
+            width: "104px",
+            height: "92px",
             boxShadow:
               "inset 0 1px 0 rgba(255,255,255,0.9), 0 14px 30px rgba(15,23,42,0.10)",
           }}
@@ -194,19 +195,19 @@ export default function SlotModal({ slot, onClose }) {
           <Icon color={s.bg} />
         </div>
 
-        <div className="text-center mb-6">
+        <div className="text-center mb-5">
           <p className="text-gray-400 text-xs uppercase tracking-widest mb-2 font-bold">
             {estacionamento}
           </p>
 
-          <h2 className="text-gray-800 text-3xl font-bold leading-tight">
+          <h2 className="text-gray-800 text-2xl font-bold leading-tight">
             Vaga {codigo}
           </h2>
 
           <p className="text-gray-500 text-sm font-medium mt-2">{tipo}</p>
         </div>
 
-        <div className="flex justify-center mb-7">
+        <div className="flex justify-center mb-5">
           <span
             className="text-sm font-bold px-5 py-2 rounded-full"
             style={{
@@ -222,7 +223,7 @@ export default function SlotModal({ slot, onClose }) {
         <div className="w-full mt-auto">
           {slot.isBusStop && (
             <div
-              className="rounded-2xl px-4 py-3.5 text-center text-sm font-bold"
+              className="rounded-2xl px-4 py-3 text-center text-sm font-bold"
               style={{
                 background: "#eff6ff",
                 color: "#1d4ed8",
@@ -235,24 +236,15 @@ export default function SlotModal({ slot, onClose }) {
 
           {!slot.isBusStop && slot.status === "disponivel" && (
             <div className="space-y-3">
-              <div
-                className="rounded-2xl px-4 py-3 text-center text-sm text-gray-500 font-medium"
-                style={{
-                  background: "#f8fafc",
-                  border: "1px solid #e5e7eb",
-                }}
-              >
-                A reserva será enviada para aprovação do administrador.
-              </div>
 
               {mensagem && (
-                <div className="rounded-2xl px-4 py-3 text-center text-sm font-bold bg-green-50 text-green-600 border border-green-200">
+                <div className="rounded-2xl px-4 py-2.5 text-center text-sm font-bold bg-green-50 text-green-600 border border-green-200">
                   {mensagem}
                 </div>
               )}
 
               {erro && (
-                <div className="rounded-2xl px-4 py-3 text-center text-sm font-bold bg-red-50 text-red-500 border border-red-200">
+                <div className="rounded-2xl px-4 py-2.5 text-center text-sm font-bold bg-red-50 text-red-500 border border-red-200">
                   {erro}
                 </div>
               )}
@@ -260,7 +252,7 @@ export default function SlotModal({ slot, onClose }) {
               <button
                 onClick={handleSolicitarReserva}
                 disabled={loading || !!mensagem}
-                className={`w-full ${s.btn} text-white text-sm font-bold py-3.5 rounded-2xl active:scale-95 transition-all shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed`}
+                className={`w-full ${s.btn} text-white text-sm font-bold py-3 rounded-2xl active:scale-95 transition-all shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed`}
               >
                 {loading
                   ? "Enviando..."
@@ -273,7 +265,7 @@ export default function SlotModal({ slot, onClose }) {
 
           {!slot.isBusStop && slot.status === "ocupada" && (
             <div
-              className="rounded-2xl px-4 py-3.5 text-center text-sm font-bold"
+              className="rounded-2xl px-4 py-3 text-center text-sm font-bold"
               style={{
                 background: s.light,
                 color: s.text,
@@ -286,7 +278,7 @@ export default function SlotModal({ slot, onClose }) {
 
           {!slot.isBusStop && slot.status === "reservada" && (
             <div
-              className="rounded-2xl px-4 py-3.5 text-center text-sm font-bold"
+              className="rounded-2xl px-4 py-3 text-center text-sm font-bold"
               style={{
                 background: s.light,
                 color: s.text,

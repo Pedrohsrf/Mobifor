@@ -11,7 +11,7 @@ export async function listarVagas() {
 }
 
 export async function atualizarStatusVaga(id, status) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token") || localStorage.getItem("token");
 
   const response = await fetch(`${API_URL}/vagas/${id}/status`, {
     method: "PATCH",

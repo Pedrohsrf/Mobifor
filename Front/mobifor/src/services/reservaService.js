@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 function getToken() {
-  return localStorage.getItem("token");
+  return sessionStorage.getItem("token") || localStorage.getItem("token");
 }
 
 export async function solicitarReserva(vagaId) {

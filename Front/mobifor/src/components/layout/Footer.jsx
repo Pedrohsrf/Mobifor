@@ -10,7 +10,7 @@ export default function Footer() {
     </div>
 
     <div className="text-center">
-      <p className="text-2xl font-bold ">
+      <p className="text-2xl font-bold">
         Mobifor – STRP, Universidade de Fortaleza.
       </p>
     </div>
@@ -18,7 +18,7 @@ export default function Footer() {
     <div className="text-sm text-right space-y-1">
       <p className="flex items-center justify-end gap-1 text-base">
         <i className='bi bi-telephone'>
-            </i>(85) 99999 – 9999
+            </i>(85) 91918 – 4742
       </p>
       <p className="flex items-center justify-end gap-1 text-base">
         <i className='bi bi-envelope'>

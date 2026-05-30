@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 
 export function useParkingMapControls() {
-  const [transform, setTransform] = useState({ x: 20, y: 10, scale: 1 })
+  const [transform, setTransform] = useState({ x: 250, y: 10, scale: 1 })
 
   const isPanning = useRef(false)
   const lastPos = useRef({ x: 0, y: 0 })
