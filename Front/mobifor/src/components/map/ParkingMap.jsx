@@ -14,7 +14,7 @@ import { listarVagas } from "../../services/vagaService"
 import { buscarUsuario } from "../../utils/authStorage"
 import { listarOnibus } from "../../services/onibusServices"
 
-export default function ParkingMap() {
+export default function ParkingMap({ refreshTrigger = 0 }) {
   const [selected, setSelected] = useState(null)
   const [slots, setSlots] = useState([])
   const [loading, setLoading] = useState(true)
@@ -34,7 +34,6 @@ export default function ParkingMap() {
     zoomOut,
   } = useParkingMapControls()
 
-  useEffect(() => {
   async function carregarDados() {
     try {
       const [vagasData, onibusData] = await Promise.all([
@@ -44,6 +43,7 @@ export default function ParkingMap() {
 
       setSlots(vagasData)
       setOnibus(onibusData)
+      setErro("")
 
     } catch (err) {
 
@@ -56,9 +56,9 @@ export default function ParkingMap() {
     }
   }
 
-
-  carregarDados()
-}, [])
+  useEffect(() => {
+    carregarDados()
+  }, [refreshTrigger])
 
   const handleSlotClick = (slot, e) => {
     e.stopPropagation()
@@ -66,15 +66,15 @@ export default function ParkingMap() {
   }
 
   const handleBusClick = (bus, e) => {
-  e.stopPropagation()
+    e.stopPropagation()
 
-  setSelected({
-    ...bus,
-    isBusStop: true,
-  })
-}
+    setSelected({
+      ...bus,
+      isBusStop: true,
+    })
+  }
 
-  const handleStatusUpdated = (vagaAtualizada) => {
+  const handleStatusUpdated = async (vagaAtualizada) => {
     setSlots((prev) =>
       prev.map((slot) =>
         slot._id === vagaAtualizada._id ? vagaAtualizada : slot
@@ -82,6 +82,8 @@ export default function ParkingMap() {
     )
 
     setSelected(vagaAtualizada)
+
+    await carregarDados()
   }
 
   return (
@@ -137,15 +139,15 @@ export default function ParkingMap() {
 
             {onibus.map((bus, index) => (
               <BusStop
-              key={bus._id}
-              stop={{
-                id: bus._id,
-                x: BUS_STOPS[index]?.x ?? 100,
-                y: BUS_STOPS[index]?.y ?? 100,
-                label: `UniBus ${bus.numero}`
-              }}
-              onClick={(e) => handleBusClick(bus, e)}
-            />
+                key={bus._id}
+                stop={{
+                  id: bus._id,
+                  x: BUS_STOPS[index]?.x ?? 100,
+                  y: BUS_STOPS[index]?.y ?? 100,
+                  label: `UniBus ${bus.numero}`
+                }}
+                onClick={(e) => handleBusClick(bus, e)}
+              />
             ))}
           </g>
         </svg>

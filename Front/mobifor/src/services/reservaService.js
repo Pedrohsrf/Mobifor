@@ -25,6 +25,22 @@ export async function solicitarReserva(vagaId) {
   return data;
 }
 
+export async function listarMinhasReservas() {
+  const response = await fetch(`${API_URL}/reservas/minhas`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.erro || "Erro ao listar suas reservas");
+  }
+
+  return data;
+}
+
 export async function listarReservasPendentes() {
   const response = await fetch(`${API_URL}/reservas/pendentes`, {
     headers: {

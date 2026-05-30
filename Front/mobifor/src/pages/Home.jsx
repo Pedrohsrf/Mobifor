@@ -1,5 +1,6 @@
 import ParkingMap from "../components/map/ParkingMap"
 import MobistatsSection from "../components/parking/MobistatsSection"
+import MinhasReservasSection from "../components/parking/MinhasReservasSection"
 import InformationSection from "../components/layout/InformationSection"
 import { buscarUsuario } from "../utils/authStorage"
 
@@ -25,6 +26,8 @@ export default function Home() {
         </div>
 
         <MobistatsSection />
+
+        <MinhasReservasSection />
 
         <InformationSection />
 

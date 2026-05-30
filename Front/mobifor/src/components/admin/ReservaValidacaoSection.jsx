@@ -6,7 +6,7 @@ import {
   rejeitarReserva,
 } from "../../services/reservaService";
 
-export default function ReservaValidacaoSection() {
+export default function ReservaValidacaoSection({ onReservaAtualizada }) {
   const [reservas, setReservas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState("");
@@ -38,6 +38,10 @@ export default function ReservaValidacaoSection() {
           reserva._id === id ? reservaAtualizada : reserva
         )
       );
+
+      if (onReservaAtualizada) {
+        onReservaAtualizada();
+      }
     } catch (err) {
       alert(err.message || "Erro ao aprovar reserva.");
     }
