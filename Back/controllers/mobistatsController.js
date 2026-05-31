@@ -30,17 +30,18 @@ export const obterMobistats = async (req, res) => {
     let menorQtd = Infinity;
 
     for (const est of estacionamentos) {
-      const qtd = await Vaga.countDocuments({
+      const qtdDisponiveis = await Vaga.countDocuments({
         estacionamento: est._id,
+        status: "disponivel",
       });
 
-      if (qtd > maiorQtd) {
-        maiorQtd = qtd;
+      if (qtdDisponiveis > maiorQtd) {
+        maiorQtd = qtdDisponiveis;
         estacionamentoMaisVagas = est.nome;
       }
 
-      if (qtd < menorQtd) {
-        menorQtd = qtd;
+      if (qtdDisponiveis < menorQtd) {
+        menorQtd = qtdDisponiveis;
         estacionamentoMenosVagas = est.nome;
       }
     }

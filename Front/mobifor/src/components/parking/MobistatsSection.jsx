@@ -8,26 +8,32 @@ export default function MobistatsSection() {
 
   const [loading, setLoading] = useState(true)
 
+  async function carregarStats() {
+    try {
+
+      const data = await obterMobistats()
+
+      setStats(data)
+
+    } catch (err) {
+
+      console.error(err)
+
+    } finally {
+
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
 
-    async function carregarStats() {
-      try {
-
-        const data = await obterMobistats()
-
-        setStats(data)
-
-      } catch (err) {
-
-        console.error(err)
-
-      } finally {
-
-        setLoading(false)
-      }
-    }
-
     carregarStats()
+
+    const intervalo = setInterval(() => {
+      carregarStats()
+    }, 3000)
+
+    return () => clearInterval(intervalo)
 
   }, [])
 

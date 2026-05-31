@@ -60,6 +60,14 @@ export default function ParkingMap({ refreshTrigger = 0 }) {
     carregarDados()
   }, [refreshTrigger])
 
+  useEffect(() => {
+    const intervalo = setInterval(() => {
+      carregarDados()
+    }, 2000)
+
+    return () => clearInterval(intervalo)
+  }, [])
+
   const handleSlotClick = (slot, e) => {
     e.stopPropagation()
     setSelected(slot)

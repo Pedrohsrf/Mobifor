@@ -9,16 +9,25 @@ export default function MinhasReservasSection() {
 
   useEffect(() => {
     carregarMinhasReservas()
+
+    const intervalo = setInterval(() => {
+      carregarMinhasReservas(false)
+    }, 3000)
+
+    return () => clearInterval(intervalo)
   }, [])
 
-  async function carregarMinhasReservas() {
+  async function carregarMinhasReservas(exibirLoading = true) {
     try {
-      setLoading(true)
+      if (exibirLoading) {
+        setLoading(true)
+      }
+
       setErro("")
 
       const data = await listarMinhasReservas()
 
-      setReservas(data)
+      setReservas(data.slice(0, 3))
     } catch (err) {
       setErro(err.message || "Erro ao carregar suas reservas.")
     } finally {
@@ -115,7 +124,7 @@ export default function MinhasReservasSection() {
         </h2>
 
         <p className="text-sm font-medium text-gray-500 mt-1">
-          Acompanhe o status das suas reservas solicitadas.
+          Acompanhe o status das suas últimas solicitações de reserva.
         </p>
       </div>
 

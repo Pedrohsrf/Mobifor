@@ -13,11 +13,20 @@ export default function ReservaValidacaoSection({ onReservaAtualizada }) {
 
   useEffect(() => {
     carregarReservas();
+
+    const intervalo = setInterval(() => {
+      carregarReservas(false);
+    }, 3000);
+
+    return () => clearInterval(intervalo);
   }, []);
 
-  async function carregarReservas() {
+  async function carregarReservas(exibirLoading = true) {
     try {
-      setLoading(true);
+      if (exibirLoading) {
+        setLoading(true);
+      }
+
       setErro("");
 
       const data = await listarReservasPendentes();
@@ -42,6 +51,8 @@ export default function ReservaValidacaoSection({ onReservaAtualizada }) {
       if (onReservaAtualizada) {
         onReservaAtualizada();
       }
+
+      carregarReservas(false);
     } catch (err) {
       alert(err.message || "Erro ao aprovar reserva.");
     }
@@ -56,6 +67,8 @@ export default function ReservaValidacaoSection({ onReservaAtualizada }) {
           reserva._id === id ? reservaAtualizada : reserva
         )
       );
+
+      carregarReservas(false);
     } catch (err) {
       alert(err.message || "Erro ao rejeitar reserva.");
     }
